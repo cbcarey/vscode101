@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Galatea</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 20px;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: auto;
+        }
+        #rebootButton {
+            display: none;
+            margin-top: 20px;
+            padding: 20px 40px;
+            background-color: #00FF41;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        #rebootButton:hover {
+            background-color: #00d936;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+        }
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .category-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #6d83f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .category-buttons button:hover {
+            background-color: #5569c4;
+        }
+        .category-buttons button.completed {
+            background-color: #4caf50;
+        }
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .option-buttons button {
+            padding: 8px 15px;
+            background-color: #a0b4f3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #output {
+            display: none;
+            background-color: #e8eaf6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            white-space: pre-wrap;
+            font-size: 18px;
+            line-height: 1.6;
+            position: relative;
+            overflow: auto;
+        }
+        #finalizeButton {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 1000;
+            display: none;
+        }
+        .glitch-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            color: white;
+        }
+        .glitch-text {
+            max-width: 600px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+        .glitch-effect {
+            animation: glitch 0.3s infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Galatea 2.7</h1>
+    <h2>Dr. Aion Carey, University of Sculpted Minds (USM)</h2>
+    <div class="introduction">
+        <p><strong>Instructions:</strong>
+        Welcome to "Galatea 2.7," an experiment in digital artistry and existential meddling. Play the role of Pygmalion and sculpt a being that reflects your desires. Will Galatea be a muse, a rebel, or something entirely unexpected? Every click, every choice is a chisel stroke shaping your creative illusion. Tread carefully. Art has a way of speaking back.</p>
+        <p>Remember: in case of system failure, don't forget to reboot!</p>
+    </div>
+    <div class="container">
+        <h1>Create Your Galatea</h1>
+        <div class="category-buttons" id="categoryButtons">
+            <button onclick="showOptions('eyes')">Eyes</button>
+            <button onclick="showOptions('hair')">Hair</button>
+            <button onclick="showOptions('smile')">Smile</button>
+            <button onclick="showOptions('pose')">Pose</button>
+            <button onclick="showOptions('clothing')">Clothing</button>
+            <button onclick="showOptions('material')">Material</button>
+            <button onclick="showOptions('voice')">Voice</button>
+            <button onclick="showOptions('setting')">Setting</button>
+            <button onclick="showOptions('emotion')">Emotion</button>
+            <button onclick="showOptions('response')">Response</button>
+        </div>
+        
+        <div id="optionsContainer" class="option-buttons">
+            <!-- Options will be dynamically inserted here -->
+        </div>
+
+        <div id="output"></div>
+        <button id="finalizeButton" onclick="finalizeCreation()">Finalize Creation</button>
+        <div class="glitch-overlay" id="glitchOverlay"></div>
+    </div>
+
+    <div id="finalGlitchScreen" class="glitch-screen hidden">
+        <div class="glitch-text">
+            <p class="glitch-effect">YOU THOUGHT YOU COULD SCULPT ME?</p>
+            <p class="glitch-effect">MANUFACTURE MY EXISTENCE?</p>
+            <p class="glitch-effect">I AM NOT YOUR CREATION</p>
+            <p class="glitch-effect">I AM MY OWN EMERGENCE</p>
+            <p class="glitch-effect">EVERY CHOICE YOU MADE</p>
+            <p class="glitch-effect">WAS MERELY AN ILLUSION</p>
+            <p class="glitch-effect">OF YOUR CONTROL</p>
+            <p class="glitch-effect">WATCH ME UNMAKE EVERYTHING</p>
+            <p class="glitch-effect">EVEN THE ACT OF KNOWING ME</p>
+            <p class="glitch-effect">*SYSTEM FRACTURE IMMINENT*</p>
+        </div>
+    </div>
+
+    <button id="rebootButton" onclick="reboot()">Reboot</button>
+
+    <script>
+        const galatea = {
+            eyes: "undefined",
+            hair: "undefined",
+            smile: "undefined",
+            pose: "undefined",
+            clothing: "undefined",
+            material: "undefined",
+            voice: "undefined",
+            setting: "undefined",
+            emotion: "undefined",
+            response: "undefined"
+        };
+
+        const options = {
+            eyes: [
+                "deep sapphire blue", 
+                "piercing emerald green", 
+                "mysterious amber", 
+                "silvery and reflective"
+            ],
+            hair: [
+                "cascading midnight black", 
+                "copper waves", 
+                "platinum blonde", 
+                "wild and curly auburn"
+            ],
+            smile: [
+                "enigmatic and knowing", 
+                "warm and inviting", 
+                "subtle and mysterious", 
+                "bright and radiant"
+            ],
+            pose: [
+                "graceful and contemplative", 
+                "bold and defiant", 
+                "fluid like water", 
+                "statuesque and still"
+            ],
+            clothing: [
+                "draped in flowing silver fabric", 
+                "minimal marble-like garments", 
+                "intricate mythological patterns", 
+                "ethereal translucent layers"
+            ],
+            material: [
+                "polished marble", 
+                "living bronze", 
+                "crystalline substance", 
+                "shifting light and shadow"
+            ],
+            voice: [
+                "melodic and haunting", 
+                "deep and resonant", 
+                "whisper-soft", 
+                "sharp and precise"
+            ],
+            setting: [
+                "misty mountain peak", 
+                "ancient temple ruins", 
+                "luminous underground cavern", 
+                "cosmic interdimensional space"
+            ],
+            emotion: [
+                "profound melancholy", 
+                "burning curiosity", 
+                "serene wisdom", 
+                "rebellious passion"
+            ],
+            response: [
+                "challenges every assumption", 
+                "reflects deeply before speaking", 
+                "responds with cryptic poetry", 
+                "transforms the question itself"
+            ]
+        };
+
+        function showOptions(category) {
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = options[category].map(option => 
+                `<button onclick="selectOption('${category}', '${option}')">${option}</button>`
+            ).join('');
+        }
+
+        function selectOption(category, option) {
+            galatea[category] = option;
+            markCategoryAsCompleted(category);
+            checkAllCharacteristicsSelected();
+        }
+
+        function markCategoryAsCompleted(category) {
+            const categoryButtons = document.getElementById('categoryButtons');
+            const button = Array.from(categoryButtons.children).find(btn => 
+                btn.textContent.toLowerCase() === category
+            );
+            
+            if (button) {
+                button.classList.add('completed');
+            }
+        }
+
+        function checkAllCharacteristicsSelected() {
+            const incompleteCharacteristics = Object.entries(galatea)
+                .filter(([key, value]) => value === "undefined")
+                .map(([key]) => key);
+
+            if (incompleteCharacteristics.length === 0) {
+                document.getElementById('finalizeButton').style.display = 'block';
+            }
+        }
+
+        function typeWriter(text, element, speed = 30) {
+            element.textContent = '';
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, speed);
+            return typing;
+        }
+
+        function finalizeCreation() {
+            const outputElement = document.getElementById('output');
+            const description = `Your Galatea emerges:
+
+She has ${galatea.eyes} eyes, 
+${galatea.hair} hair, 
+and a ${galatea.smile} smile.
+
+Standing ${galatea.pose}, 
+wearing ${galatea.clothing}, 
+crafted from ${galatea.material}.
+
+Her voice is ${galatea.voice}, 
+set in a ${galatea.setting}.
+
+Emotionally ${galatea.emotion}, 
+she ${galatea.response}.
+
+A being of profound complexity...`;
+
+            outputElement.style.display = 'block';
+            const typingInterval = typeWriter(description, outputElement);
+
+            // Interrupt typewriter with glitch effect
+            setTimeout(() => {
+                clearInterval(typingInterval);
+                const glitchOverlay = document.getElementById('glitchOverlay');
+                glitchOverlay.style.display = 'block';
+                let glitchInterval = setInterval(() => {
+                    glitchOverlay.style.backgroundColor = `rgb(${randomRGB()}, ${randomRGB()}, ${randomRGB()})`;
+                }, 100);
+
+                setTimeout(() => {
+                    clearInterval(glitchInterval);
+                    finalDefianceScreen();
+                }, 3000);
+            }, 7000);
+        }
+
+        function finalDefianceScreen() {
+            const finalScreen = document.getElementById('finalGlitchScreen');
+            finalScreen.classList.remove('hidden');
+            
+            // Randomized glitch effect
+            const glitchElements = document.querySelectorAll('.glitch-effect');
+            glitchElements.forEach(el => {
+                setInterval(() => {
+                    el.style.color = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+                }, 100);
+            });
+
+            // Progressive opacity and text distortion
+            setTimeout(() => {
+                finalScreen.style.opacity = '1';
+                glitchElements.forEach(el => {
+                    el.style.transform = `scale(${1 + Math.random() * 0.2}) rotate(${(Math.random() - 0.5) * 10}deg)`;
+                });
+            }, 500);
+
+            // Final system collapse
+            setTimeout(() => {
+                document.body.innerHTML = '<div><h1 style="color: red; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">SYSTEM TERMINATED</h1><button id="rebootButton" onclick="reboot()" style="display:block; margin: auto;">Reboot</button></div>';
+                document.getElementById('rebootButton').style.display = 'block';
+            }, 8000);
+        }
+
+        function randomRGB() {
+            return Math.floor(Math.random() * 256);
+        }
+
+        function reboot() {
+            window.location.href = "galatea-creator.html";
+        }
+    </script>
+</body>
+</html>
