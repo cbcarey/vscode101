@@ -3,7 +3,7 @@ from datetime import date
 
 
 def say_hello(name):
-    name = "Craig"
+    name = "Henry"
     print("Hello, " + name)
 
 say_hello("VS Code")
